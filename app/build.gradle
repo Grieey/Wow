@@ -1,6 +1,7 @@
 plugins {
   id 'com.android.application'
   id 'kotlin-android'
+  id 'kotlin-kapt'
 }
 
 android {
@@ -31,19 +32,26 @@ android {
   kotlinOptions {
     jvmTarget = androids.jvm
   }
+
+  // 用于生成epoxy的辅助类
+  kapt {
+    correctErrorTypes = true
+  }
+  viewBinding {
+    enabled = true
+  }
 }
 
 dependencies {
+  // 核心库
+  implementation "com.github.Grieey:CoreExt:${core.coreExt}"
+  implementation "com.github.Grieey:core-schedule:${core.coreSchedule}"
+  implementation "com.github.Grieey:core-ui:${core.coreUi}"
 
-  api "org.jetbrains.kotlin:kotlin-stdlib:${androids.kotlin}"
-  api "androidx.core:core-ktx:${androidx.ktx}"
-  api "androidx.appcompat:appcompat:${androidx.appcompat}"
-  api "com.google.android.material:material:${androidx.material}"
-  api "androidx.constraintlayout:constraintlayout:${androidx.constraintlayout}"
-
-  api "com.github.Grieey:CoreExt:${core.coreExt}"
-  api "com.github.Grieey:core-schedule:${core.coreSchedule}"
-  api "com.github.Grieey:core-ui:${core.coreUi}"
+  // epoxy
+  implementation "com.airbnb.android:epoxy:${deps.epoxyVersion}"
+  // Add the annotation processor if you are using Epoxy's annotations (recommended)
+  kapt "com.airbnb.android:epoxy-processor:${deps.epoxyVersion}"
 
   testImplementation 'junit:junit:4.+'
   androidTestImplementation 'androidx.test.ext:junit:1.1.2'

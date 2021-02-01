@@ -1,10 +1,4 @@
 ext {
-  // 更新版本类型
-  updateType = [
-      major    : 1,
-      minjor   : 2,
-      amendment: 3
-  ]
 
   androids = [
       applicationId          : "com.github.grieey.wow",
@@ -32,5 +26,9 @@ ext {
       coreExt     : "0.0.6",
       coreSchedule: "0.0.3",
       coreUi      : "0.0.1"
+  ]
+
+  deps = [
+      epoxyVersion: "4.3.1"
   ]
 }

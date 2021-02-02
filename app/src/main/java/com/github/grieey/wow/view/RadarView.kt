@@ -148,7 +148,7 @@ class RadarView @JvmOverloads constructor(
   /**
    * 数据源
    */
-  var dataSource: List<Data> = emptyList()
+  var dataSource: List<RadarData> = emptyList()
     set(value) {
       field = value
       showAllAnimator.setIntValues(0, field.lastIndex)
@@ -237,10 +237,10 @@ class RadarView @JvmOverloads constructor(
 
     when {
       !changingLoc.isOrigin() -> {
-        // 绘制改变中的三角形
+        // 绘制动画中的三角形
         canvas.drawTriangle(
           changingLoc,
-          dataSource[selectedIndex].heightLightColor,
+          dataSource[selectedIndex].highlightColor,
           dataSource[selectedIndex].color,
           isFill = true
         )
@@ -250,14 +250,14 @@ class RadarView @JvmOverloads constructor(
         // 绘制选中的三角形
         canvas.drawTriangle(
           dataSource[selectedIndex].values,
-          dataSource[selectedIndex].heightLightColor,
+          dataSource[selectedIndex].highlightColor,
           dataSource[selectedIndex].color,
           isFill = true
         )
         canvas.drawDetail()
       }
       else -> {
-        // 绘制三角形
+        // 绘制所有的三角形
         dataSource
           // 改变排序，从已选中的分类开始绘制
           .sortedByDescending {
@@ -265,7 +265,7 @@ class RadarView @JvmOverloads constructor(
           }
           .take(prepare2ShowIndex + 1)
           .forEach {
-            canvas.drawTriangle(it.values, it.heightLightColor, it.color, isFill = true)
+            canvas.drawTriangle(it.values, it.highlightColor, it.color, isFill = true)
           }
       }
     }
@@ -396,11 +396,11 @@ class RadarView @JvmOverloads constructor(
     val (xText, yText, zText) = selected.values
 
     paint.apply {
-      color = selected.heightLightColor
+      color = selected.highlightColor
     }
 
     textPaint.apply {
-      color = selected.heightLightColor
+      color = selected.highlightColor
       textSize = 12.dp
       textAlign = Paint.Align.LEFT
     }
@@ -461,7 +461,7 @@ class RadarView @JvmOverloads constructor(
 
       // 绘制文本框
       paint.style = Paint.Style.STROKE
-      paint.color = selected.heightLightColor
+      paint.color = selected.highlightColor
       if (curWidth > (6 * detailPadding)) {
         drawRoundRect(
           p.x - detailPadding,
@@ -520,6 +520,9 @@ class RadarView @JvmOverloads constructor(
     performDraw(z, zTextBounds, zText.toString())
   }
 
+  /**
+   * 是否是左边原点
+   */
   private fun Triple<Double, Double, Double>.isOrigin() =
     first == 0.0 && second == 0.0 && third == 0.0
 
@@ -608,8 +611,8 @@ class RadarView @JvmOverloads constructor(
     defStyleAttr: Int = 0
   ) : View(context, attrs, defStyleAttr) {
 
-    constructor(data: Data, context: Context) : this(context) {
-      itemData = data
+    constructor(radarData: RadarData, context: Context) : this(context) {
+      itemData = radarData
     }
 
     private val titleBounds = Rect()
@@ -627,7 +630,7 @@ class RadarView @JvmOverloads constructor(
       )
     }
 
-    lateinit var itemData: Data
+    lateinit var itemData: RadarData
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
       textPaint.textSize = 12.sp
@@ -657,7 +660,7 @@ class RadarView @JvmOverloads constructor(
       }
 
       // 左侧的小圆
-      paint.color = itemData.heightLightColor
+      paint.color = itemData.highlightColor
       canvas.drawCircle(
         2F * detailPadding,
         height / 2F,
@@ -666,7 +669,7 @@ class RadarView @JvmOverloads constructor(
       )
 
       // title文本
-      textPaint.color = if (isSelected) itemData.heightLightColor else textColor
+      textPaint.color = if (isSelected) itemData.highlightColor else textColor
       textPaint.textAlign = Paint.Align.LEFT
       canvas.drawText(
         itemData.title,
@@ -688,11 +691,11 @@ class RadarView @JvmOverloads constructor(
     }
   }
 
-  data class Data(
+  data class RadarData(
     /** 标题 */
     val title: String,
     /** 高亮颜色值 */
-    val heightLightColor: Int,
+    val highlightColor: Int,
     /** 普通颜色 */
     val color: Int,
     /** x, y, z 的坐标值*/

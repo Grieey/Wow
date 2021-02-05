@@ -46,6 +46,12 @@ rootProject.ext.PARIS_VERSION = "1.7.1"
 
 rootProject.ext.INCAP_VERSION = "0.2"
 
+rootProject.ext.CORE_UI = "0.0.1"
+rootProject.ext.CORE_SCHEDULE = "0.0.3"
+rootProject.ext.CORE_EXT = "0.0.7"
+
+rootProject.ext.EPOXY_VERSION = "4.3.1"
+
 rootProject.ext.config = [
     applicationId    : "com.github.grieey.wow",
     buildToolsVersion: "30.0.2",
@@ -88,4 +94,9 @@ rootProject.ext.deps = [
     glide                  : "com.github.bumptech.glide:glide:$GLIDE_VERSION",
     incapRuntime           : "net.ltgt.gradle.incap:incap:$INCAP_VERSION",
     incapProcessor         : "net.ltgt.gradle.incap:incap-processor:$INCAP_VERSION",
+    coreUi                 : "com.github.Grieey:core-ext:$CORE_EXT",
+    coreSchedule           : "com.github.Grieey:core-schedule:$CORE_SCHEDULE",
+    coreExt                : "com.github.Grieey:core-ui:$CORE_UI",
+    epoxy                  : "com.airbnb.android:epoxy:$EPOXY_VERSION",
+    epoxyProcessor         : "com.airbnb.android:epoxy-processor:$EPOXY_VERSION"
 ]

@@ -1,9 +1,6 @@
 package com.github.grieey.wow.extension
 
-import android.app.Application
-import android.content.res.Resources
-import com.github.grieey.coreui.CoreApplication
-import com.github.grieey.wow.App
+import com.github.grieey.coreui.CoreApplication.Companion.INSTANCE
 
 /**
  * description: 资源扩展
@@ -16,7 +13,7 @@ import com.github.grieey.wow.App
  */
 fun Int.getColor(): Int? {
   return this.runCatching {
-    App.INSTANCE.getColor(this)
+    INSTANCE.getColor(this)
   }
     .getOrNull()
 }

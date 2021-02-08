@@ -8,14 +8,4 @@ import com.github.grieey.coreui.CoreApplication
  * @author: Grieey
  */
 class App : CoreApplication() {
-
-  override fun onCreate() {
-    super.onCreate()
-    INSTANCE = this
-  }
-
-  companion object {
-    lateinit var INSTANCE: CoreApplication
-      private set
-  }
 }

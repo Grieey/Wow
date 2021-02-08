@@ -1,16 +1,12 @@
 package com.github.grieey.wow
 
-import android.content.res.Resources
 import android.os.Bundle
-import com.github.grieey.core_ext.gone
-import com.github.grieey.core_ext.sp
-import com.github.grieey.core_ext.visible
+import com.github.grieey.core_ext.*
 import com.github.grieey.coreui.CoreActivity
 import com.github.grieey.coreui.CoreFragment
 import com.github.grieey.wow.constant.Router
 import com.github.grieey.wow.databinding.ActivityMainBinding
 import com.github.grieey.wow.extension.applyColorTo
-import com.github.grieey.wow.extension.getColor
 import com.github.grieey.wow.items.textItem
 import kotlin.reflect.KClass
 
@@ -26,7 +22,7 @@ class MainActivity : CoreActivity() {
   }
 
   override fun onBackPressed() {
-    if (binding.container.visible) {
+    if (binding.container.visibled) {
       showList()
     } else {
       super.onBackPressed()
@@ -53,6 +49,7 @@ class MainActivity : CoreActivity() {
           style {
             it.textSize = 12.sp
             R.color.purple_500 applyColorTo it::setTextColor
+            it.setPadding(8.dp.int, 8.dp.int, 8.dp.int, 8.dp.int)
           }
           click { _, _ ->
             showTarget(it.third)

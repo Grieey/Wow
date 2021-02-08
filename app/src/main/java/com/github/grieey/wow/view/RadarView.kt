@@ -698,7 +698,7 @@ class RadarView @JvmOverloads constructor(
     val highlightColor: Int,
     /** 普通颜色 */
     val color: Int,
-    /** x, y, z 的坐标值*/
+    /** x, y, z 的坐标值 */
     val values: Triple<Double, Double, Double>
   )
 }

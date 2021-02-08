@@ -33,7 +33,6 @@ rootProject.ext.GLIDE_VERSION = "4.9.0"
 
 rootProject.ext.ASSERTJ_VERSION = "1.7.1"
 rootProject.ext.GOOGLE_TESTING_COMPILE_VERSION = "0.18"
-rootProject.ext.JUNIT_VERSION = "4.12"
 rootProject.ext.MOCKITO_VERSION = "3.5.10"
 rootProject.ext.ROBOLECTRIC_VERSION = "4.4"
 
@@ -103,7 +102,6 @@ rootProject.ext.deps = [
     coreExt                : "com.github.Grieey:core-ui:$CORE_UI",
     epoxy                  : "com.airbnb.android:epoxy:$EPOXY_VERSION",
     epoxyProcessor         : "com.airbnb.android:epoxy-processor:$EPOXY_VERSION",
-    junit                  : "junit:junit:$JUNIT_VERSION",
     junitExt               : "androidx.test.ext:junit:$JUNIT_EXT_VERSION",
     espresso               : "androidx.test.espresso:espresso-core:$ESPRESSO_VERSION"
 ]

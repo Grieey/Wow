@@ -46,11 +46,15 @@ rootProject.ext.PARIS_VERSION = "1.7.1"
 
 rootProject.ext.INCAP_VERSION = "0.2"
 
-rootProject.ext.CORE_UI = "0.0.1"
+rootProject.ext.CORE_UI = "0.0.2"
 rootProject.ext.CORE_SCHEDULE = "0.0.3"
 rootProject.ext.CORE_EXT = "0.0.7"
 
 rootProject.ext.EPOXY_VERSION = "4.3.1"
+
+rootProject.ext.JUNIT_VERSION = "4.+"
+rootProject.ext.JUNIT_EXT_VERSION = "1.1.2"
+rootProject.ext.ESPRESSO_VERSION = "3.3.0"
 
 rootProject.ext.config = [
     applicationId    : "com.github.grieey.wow",
@@ -98,5 +102,8 @@ rootProject.ext.deps = [
     coreSchedule           : "com.github.Grieey:core-schedule:$CORE_SCHEDULE",
     coreExt                : "com.github.Grieey:core-ui:$CORE_UI",
     epoxy                  : "com.airbnb.android:epoxy:$EPOXY_VERSION",
-    epoxyProcessor         : "com.airbnb.android:epoxy-processor:$EPOXY_VERSION"
+    epoxyProcessor         : "com.airbnb.android:epoxy-processor:$EPOXY_VERSION",
+    junit                  : "junit:junit:$JUNIT_VERSION",
+    junitExt               : "androidx.test.ext:junit:$JUNIT_EXT_VERSION",
+    espresso               : "androidx.test.espresso:espresso-core:$ESPRESSO_VERSION"
 ]

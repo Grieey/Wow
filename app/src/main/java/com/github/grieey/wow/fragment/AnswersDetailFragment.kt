@@ -12,8 +12,8 @@ import com.github.grieey.wow.databinding.FragmentAnswersDetailBinding
 class AnswersDetailFragment :
   ViewBindingFragment<FragmentAnswersDetailBinding>(FragmentAnswersDetailBinding::inflate) {
 
-
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    TODO("实现仿写知乎详情的效果")
   }
 }

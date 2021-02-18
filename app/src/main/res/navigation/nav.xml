@@ -15,14 +15,22 @@
         android:id="@+id/action_main_to_radar"
         app:destination="@id/radarFragment" />
 
+    <action
+        android:id="@+id/action_to_answer_detail"
+        app:destination="@id/answerDetailFragment" />
+
   </fragment>
 
   <fragment
       android:id="@+id/radarFragment"
       android:name="com.github.grieey.wow.fragment.RadarFragment"
       android:label="fragment_radar"
-      tools:layout="@layout/fragment_radar">
+      tools:layout="@layout/fragment_radar" />
 
-  </fragment>
+  <fragment
+      android:id="@+id/answerDetailFragment"
+      android:name="com.github.grieey.wow.fragment.AnswersDetailFragment"
+      android:label="fragment_answer_detail"
+      tools:layout="@layout/fragment_answers_detail" />
 
 </navigation>

@@ -41,7 +41,7 @@ class MainFragment : CoreFragment() {
 
   private fun initEpoxy() {
     binding.epoxy.withModels {
-      Router.MAP2.forEach {
+      Router.MAP.forEach {
         textItem {
           id(it.first)
           target(it.second)
@@ -52,7 +52,7 @@ class MainFragment : CoreFragment() {
             it.setPadding(8.dp.int, 8.dp.int, 8.dp.int, 8.dp.int)
           }
           click { _, _ ->
-            NavHostFragment.findNavController(this@MainFragment).navigate(R.id.action_main_to_radar)
+            NavHostFragment.findNavController(this@MainFragment).navigate(it.second)
           }
         }
       }

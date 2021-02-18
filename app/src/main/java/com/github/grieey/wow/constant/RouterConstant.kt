@@ -12,11 +12,7 @@ import kotlin.reflect.KClass
  */
 interface Router {
   companion object {
-    val MAP = listOf<Triple<Int, String, KClass<out CoreFragment>>>(
-      Triple(1, "三角雷达坐标图", RadarFragment::class)
-    )
-
-    val MAP2 = listOf(
+    val MAP = listOf(
       Pair("三角雷达坐标图", R.id.action_main_to_radar)
     )
   }

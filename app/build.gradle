@@ -37,6 +37,7 @@ android {
   kapt {
     correctErrorTypes = true
   }
+
   viewBinding {
     enabled = true
   }
@@ -50,9 +51,11 @@ dependencies {
 
   // epoxy
   implementation rootProject.deps.epoxy
-  implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
-  implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
   kapt rootProject.deps.epoxyProcessor
+
+  // navigation
+  implementation rootProject.deps.navigationFragment
+  implementation rootProject.deps.navigationUi
 
   // test
   testImplementation rootProject.deps.junit

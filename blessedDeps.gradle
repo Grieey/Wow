@@ -55,6 +55,8 @@ rootProject.ext.JUNIT_VERSION = "4.+"
 rootProject.ext.JUNIT_EXT_VERSION = "1.1.2"
 rootProject.ext.ESPRESSO_VERSION = "3.3.0"
 
+rootProject.ext.NAVIGATION = "2.2.2"
+
 rootProject.ext.config = [
     applicationId    : "com.github.grieey.wow",
     buildToolsVersion: "30.0.2",
@@ -103,5 +105,7 @@ rootProject.ext.deps = [
     epoxy                  : "com.airbnb.android:epoxy:$EPOXY_VERSION",
     epoxyProcessor         : "com.airbnb.android:epoxy-processor:$EPOXY_VERSION",
     junitExt               : "androidx.test.ext:junit:$JUNIT_EXT_VERSION",
-    espresso               : "androidx.test.espresso:espresso-core:$ESPRESSO_VERSION"
+    espresso               : "androidx.test.espresso:espresso-core:$ESPRESSO_VERSION",
+    navigationFragment     : "androidx.navigation:navigation-fragment-ktx:$NAVIGATION",
+    navigationUi           : "androidx.navigation:navigation-ui-ktx:$NAVIGATION"
 ]

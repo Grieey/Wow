@@ -45,7 +45,7 @@ rootProject.ext.PARIS_VERSION = "1.7.1"
 
 rootProject.ext.INCAP_VERSION = "0.2"
 
-rootProject.ext.CORE_UI = "0.0.3"
+rootProject.ext.CORE_UI = "0.0.4"
 rootProject.ext.CORE_SCHEDULE = "0.0.3"
 rootProject.ext.CORE_EXT = "0.0.8"
 

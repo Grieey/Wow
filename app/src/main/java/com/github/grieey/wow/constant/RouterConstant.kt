@@ -1,6 +1,7 @@
 package com.github.grieey.wow.constant
 
 import com.github.grieey.coreui.CoreFragment
+import com.github.grieey.wow.R
 import com.github.grieey.wow.fragment.RadarFragment
 import kotlin.reflect.KClass
 
@@ -13,6 +14,10 @@ interface Router {
   companion object {
     val MAP = listOf<Triple<Int, String, KClass<out CoreFragment>>>(
       Triple(1, "三角雷达坐标图", RadarFragment::class)
+    )
+
+    val MAP2 = listOf(
+      Pair("三角雷达坐标图", R.id.action_main_to_radar)
     )
   }
 }

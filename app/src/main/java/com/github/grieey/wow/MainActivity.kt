@@ -1,6 +1,7 @@
 package com.github.grieey.wow
 
 import android.os.Bundle
+import androidx.fragment.app.FragmentTransaction
 import com.github.grieey.core_ext.*
 import com.github.grieey.coreui.CoreActivity
 import com.github.grieey.coreui.CoreFragment
@@ -8,6 +9,7 @@ import com.github.grieey.wow.constant.Router
 import com.github.grieey.wow.databinding.ActivityMainBinding
 import com.github.grieey.wow.extension.applyColorTo
 import com.github.grieey.wow.items.textItem
+import kotlin.concurrent.fixedRateTimer
 import kotlin.reflect.KClass
 
 class MainActivity : CoreActivity() {
@@ -63,11 +65,13 @@ class MainActivity : CoreActivity() {
     val container = supportFragmentManager.findFragmentById(binding.container.id)
     if (container != null) {
       supportFragmentManager.beginTransaction().apply {
+        setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         replace(binding.container.id, target.java.getDeclaredConstructor().newInstance())
         commitAllowingStateLoss()
       }
     } else {
       supportFragmentManager.beginTransaction().apply {
+        setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         add(binding.container.id, target.java.getDeclaredConstructor().newInstance())
         commitAllowingStateLoss()
       }

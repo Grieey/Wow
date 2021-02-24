@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 
 /**
  * description: 自动翻页的layoutManager
+ *              重新写个思路，还是在onLayoutChildren的方法中动手脚，因为recyclerview的滑动过程就是不停的调用该方法
+ *              所以，item仅为文字的view，在layoutManager中增加一个bgView来模拟动画的背景动画。可以参考epoxy的吸顶逻辑
+ *              同时，参考picker中对动画开始和结束的控制逻辑来控制bgView的开始和结束。
  * @date: 2021/2/24 21:35
  * @author: Grieey
  */

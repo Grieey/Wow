@@ -1,14 +1,11 @@
 package com.github.grieey.wow.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
 import com.github.grieey.core_ext.dp
 import com.github.grieey.core_ext.int
 import com.github.grieey.core_ext.sp
-import com.github.grieey.coreui.CoreFragment
 import com.github.grieey.wow.R
 import com.github.grieey.wow.constant.Router
 import com.github.grieey.wow.databinding.FragmentMainBinding
@@ -20,22 +17,10 @@ import com.github.grieey.wow.items.textItem
  * @date: 2021/2/8 16:32
  * @author: Grieey
  */
-class MainFragment : CoreFragment() {
-
-  private lateinit var binding: FragmentMainBinding
-
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View? {
-    binding = FragmentMainBinding.inflate(inflater, container, false)
-    return binding.root
-  }
+class MainFragment : ViewBindingFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-
     initEpoxy()
   }
 

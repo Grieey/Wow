@@ -2,11 +2,17 @@ package com.github.grieey.wow.widget.recyclerview
 
 import android.content.Context
 import android.util.DisplayMetrics
+import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.github.grieey.core_ext.int
+import com.github.grieey.core_ext.safeLet
+import com.github.grieey.core_ext.setWidthAndHeightInPx
+import java.lang.ref.WeakReference
 
 /**
  * description: 自动翻页的layoutManager
@@ -22,9 +28,11 @@ class SafeHintLayoutManager @JvmOverloads constructor(
   reverseLayout: Boolean = false
 ) : LinearLayoutManager(context, orientation, reverseLayout) {
 
-  // 用于进行手势滑动
   private val snapHelper = LinearSnapHelper()
   private val smoothTime = 150F
+  private var bgView: View? = null
+  private val weakContext: WeakReference<Context> = WeakReference(context)
+  private var dataSource = emptyList<String>()
 
   override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams =
     RecyclerView.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
@@ -48,4 +56,56 @@ class SafeHintLayoutManager @JvmOverloads constructor(
     startSmoothScroll(smoothScroller)
   }
 
+  override fun onAdapterChanged(
+    oldAdapter: RecyclerView.Adapter<*>?,
+    newAdapter: RecyclerView.Adapter<*>?
+  ) {
+    super.onAdapterChanged(oldAdapter, newAdapter)
+    if (newAdapter is SafeHintAdapter) {
+      dataSource = newAdapter.dataSource
+    }
+  }
+
+  override fun onLayoutChildren(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
+    super.onLayoutChildren(recycler, state)
+
+    if (state.isPreLayout || childCount < 0 || dataSource.isEmpty()) return
+    layoutBg()
+  }
+
+  private fun layoutBg() {
+    if (bgView == null) {
+      createBg()
+    }
+    measureAndLayout()
+  }
+
+  private fun createBg() {
+    bgView = ImageView(weakContext.get())
+    addView(bgView, 0)
+  }
+
+  private fun measureAndLayout() {
+    bgView?.let {
+      measureChildWithMargins(it, 0, 0)
+      // 计算anchorView
+      val position = findFirstCompletelyVisibleItemPosition()
+      if (dataSource.size == 1) {
+        it.layout(0, 0, 100, 100)
+      } else {
+        val lastPosition = if (position == 0) dataSource.lastIndex else position - 1
+        val curView = findViewByPosition(position)
+        val lastView = findViewByPosition(lastPosition)
+
+        safeLet(curView, lastView) { cur, last ->
+          val max = cur.width - last.width
+          val mid = height / 2F
+          val childMid = (getDecoratedTop(it) + getDecoratedBottom(it)) / 2F
+          val process = childMid / mid
+          val curWidth = it.width + max * process
+          it.setWidthAndHeightInPx(curWidth.int)
+        }
+      }
+    }
+  }
 }

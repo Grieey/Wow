@@ -26,7 +26,7 @@ import com.github.grieey.core_ext.safeLet
 import com.github.grieey.wow.R
 import com.github.grieey.wow.extension.applyColorTo
 import com.github.grieey.wow.extension.applySizeTo
-import com.github.grieey.wow.widget.recyclerview.setWidthInPx
+import setWidthInPx
 
 /**
  * description: 仿滴滴的itemView
@@ -60,6 +60,7 @@ class SafeHintView @JvmOverloads constructor(
       super.handleMessage(msg)
       if (msg.what == UPDATE_POSITION) {
         val nextPosition = (msg.obj as Int)
+        Log.d("YANGQ", "SafeHintView::handleMessage~ $nextPosition")
         recyclerView.smoothScrollToPosition(nextPosition)
       }
     }
@@ -132,7 +133,6 @@ class SafeHintView @JvmOverloads constructor(
           // 修正position
           curPosition = getPosition(it)
         }
-
         intervalHandler.sendMessageDelayed(Message.obtain().apply {
           what = UPDATE_POSITION
           obj = ++curPosition
@@ -155,11 +155,12 @@ class SafeHintView @JvmOverloads constructor(
     }
 
     private fun animationBg() {
-      val cur = curPosition - 1
-      val next = if (cur == dataSource.lastIndex) 0 else cur + 1
+      // 当curPosition 为 0 时，是第一次的滑动，此时滑动没有结束，还没有进行数据的修正，所以特殊处理
+      // 其余的值在[onScrollStateChanged]中对position进行了修正。
+      val next = if (curPosition == 0) 1 else curPosition
+      val cur = next - 1
       val curView = findViewByPosition(cur)
       val nextView = findViewByPosition(next)
-
       safeLet(curView, nextView) { cv, nv ->
         if (animatior.isRunning) return@safeLet
         animatior.apply {

@@ -26,7 +26,7 @@ class SafeHintFragment :
   private fun initUI() {
     binding.saftHintView.dataSource = dataList
     binding.saftHintView.textStyle = {
-      R.color.white_34 applyColorTo this::setTextColor
+      R.color.white applyColorTo this::setTextColor
     }
     binding.saftHintView.click {
       Toast.makeText(activity, "hi", Toast.LENGTH_SHORT).show()

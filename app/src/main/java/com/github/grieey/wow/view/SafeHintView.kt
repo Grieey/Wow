@@ -26,7 +26,7 @@ import com.github.grieey.core_ext.safeLet
 import com.github.grieey.wow.R
 import com.github.grieey.wow.extension.applyColorTo
 import com.github.grieey.wow.extension.applySizeTo
-import setWidthInPx
+import com.github.grieey.wow.extension.setWidthInPx
 
 /**
  * description: 仿滴滴的itemView
@@ -149,9 +149,8 @@ class SafeHintView @JvmOverloads constructor(
       recycler: RecyclerView.Recycler?,
       state: RecyclerView.State?
     ): Int {
-      val scrolled = super.scrollVerticallyBy(dy, recycler, state)
       animationBg()
-      return scrolled
+      return super.scrollVerticallyBy(dy, recycler, state)
     }
 
     private fun animationBg() {

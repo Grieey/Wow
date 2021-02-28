@@ -2,13 +2,14 @@ package com.github.grieey.wow.widget.recyclerview
 
 import android.content.Context
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.RecyclerView
+import androidx.core.view.get
+import androidx.recyclerview.widget.*
+import com.github.grieey.core_ext.dp
 import com.github.grieey.core_ext.int
 import com.github.grieey.core_ext.safeLet
 import com.github.grieey.core_ext.setWidthAndHeightInPx
@@ -30,8 +31,10 @@ class SafeHintLayoutManager @JvmOverloads constructor(
 
   private val snapHelper = LinearSnapHelper()
   private val smoothTime = 150F
-  private var bgView: View? = null
   private val weakContext: WeakReference<Context> = WeakReference(context)
+  var bgView: View? = ImageView(context)
+  private var scrolled1 = 0
+
   private var dataSource = emptyList<String>()
 
   override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams =
@@ -40,6 +43,19 @@ class SafeHintLayoutManager @JvmOverloads constructor(
   override fun onAttachedToWindow(view: RecyclerView?) {
     super.onAttachedToWindow(view)
     snapHelper.attachToRecyclerView(view)
+//    safeLet(view, bgView) { rv, bg ->
+//      val parent = rv.parent as ViewGroup
+//      var index = 0
+//      for (childIndex in 0 until parent.childCount) {
+//        if (parent.getChildAt(childIndex) == rv) {
+//          index = childIndex
+//          break
+//        }
+//      }
+//
+//      parent.addView(bg, index)
+//    }
+    bgView = view
   }
 
   override fun smoothScrollToPosition(
@@ -68,44 +84,69 @@ class SafeHintLayoutManager @JvmOverloads constructor(
 
   override fun onLayoutChildren(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
     super.onLayoutChildren(recycler, state)
-
     if (state.isPreLayout || childCount < 0 || dataSource.isEmpty()) return
-    layoutBg()
   }
 
-  private fun layoutBg() {
-    if (bgView == null) {
-      createBg()
-    }
-    measureAndLayout()
+  override fun scrollVerticallyBy(
+    dy: Int,
+    recycler: RecyclerView.Recycler?,
+    state: RecyclerView.State?
+  ): Int {
+    val scrolled = super.scrollVerticallyBy(dy, recycler, state)
+    scrolled1 += dy
+//    measureAndLayout(scrolled1)
+    bgView?.setWidthInPx((300.dp + dy).int)
+    return scrolled
   }
 
-  private fun createBg() {
-    bgView = ImageView(weakContext.get())
-    addView(bgView, 0)
-  }
+//  private fun layoutBg() {
+//    if (bgView == null) {
+//      createBg()
+//    }
+//    measureAndLayout()
+//  }
+//
+//  private fun createBg() {
+//    bgView = ImageView(weakContext.get())
+//    bgView?.let {
+//      addView(it, 0)
+//    }
+//  }
 
-  private fun measureAndLayout() {
+  private fun measureAndLayout(dy: Int) {
     bgView?.let {
-      measureChildWithMargins(it, 0, 0)
       // 计算anchorView
-      val position = findFirstCompletelyVisibleItemPosition()
+      val lastPosition = findFirstVisibleItemPosition()
       if (dataSource.size == 1) {
         it.layout(0, 0, 100, 100)
       } else {
-        val lastPosition = if (position == 0) dataSource.lastIndex else position - 1
-        val curView = findViewByPosition(position)
+        val curPosition = if (lastPosition == dataSource.lastIndex) 0 else lastPosition + 1
+        val curView = findViewByPosition(curPosition)
         val lastView = findViewByPosition(lastPosition)
 
-        safeLet(curView, lastView) { cur, last ->
-          val max = cur.width - last.width
-          val mid = height / 2F
-          val childMid = (getDecoratedTop(it) + getDecoratedBottom(it)) / 2F
-          val process = childMid / mid
-          val curWidth = it.width + max * process
-          it.setWidthAndHeightInPx(curWidth.int)
-        }
+
+//        it.postDelayed({
+//          it.setWidthAndHeightInPx(newWidth = (10.dp + dy * 5.dp).int)
+        it.setWidthInPx((10.dp + dy).int)
+        Log.d("YANGQ", "SafeHintLayoutManager::measureAndLayout~$dy ${it.width}")
+//        }, 1000L)
+
+//        safeLet(curView, lastView) { cur, last ->
+//          val max = cur.width - last.width
+//          Log.d("YANGQ", "SafeHintLayoutManager::measureAndLayout~ ${cur.width}-${last.width}")
+//          val mid = height / 2F
+//          val childMid = (getDecoratedTop(cur) + getDecoratedBottom(cur)) / 2F
+//          val process = childMid / mid
+//          val curWidth = it.width + max * process
+//          it.setWidthAndHeightInPx(curWidth.int)
+//        }
       }
     }
+  }
+}
+
+fun View.setWidthInPx(width: Int) {
+  layoutParams = layoutParams.apply {
+    this.width = width
   }
 }

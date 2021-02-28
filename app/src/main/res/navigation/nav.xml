@@ -19,6 +19,10 @@
         android:id="@+id/action_to_answer_detail"
         app:destination="@id/answerDetailFragment" />
 
+    <action
+        android:id="@+id/action_to_safe_hint"
+        app:destination="@id/safeHintFragment" />
+
   </fragment>
 
   <fragment
@@ -32,5 +36,11 @@
       android:name="com.github.grieey.wow.fragment.AnswersDetailFragment"
       android:label="fragment_answer_detail"
       tools:layout="@layout/fragment_answers_detail" />
+
+  <fragment
+      android:id="@+id/safeHintFragment"
+      android:name="com.github.grieey.wow.fragment.SafeHintFragment"
+      android:label="fragment_safe_hint"
+      tools:layout="@layout/fragment_safe_hint" />
 
 </navigation>

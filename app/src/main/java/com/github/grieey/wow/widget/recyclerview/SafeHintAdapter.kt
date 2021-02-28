@@ -1,9 +1,15 @@
 package com.github.grieey.wow.widget.recyclerview
 
+import android.animation.ValueAnimator
 import android.content.Context
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.github.grieey.wow.view.SafeHintView
+import com.github.grieey.core_ext.dp
+import com.github.grieey.core_ext.int
+import com.github.grieey.core_ext.setWidthAndHeightInPx
+import com.github.grieey.wow.databinding.ItemSafeHintBinding
 
 /**
  * description: 仿滴滴的adapter
@@ -15,31 +21,50 @@ class SafeHintAdapter(private val context: Context) :
 
   lateinit var dataSource: List<String>
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    SafeHintHolder(SafeHintView(context))
-
-  override fun onBindViewHolder(holder: SafeHintHolder, position: Int) {
-    TODO("Not yet implemented")
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SafeHintHolder {
+    return SafeHintHolder(
+      ItemSafeHintBinding.inflate(
+        LayoutInflater.from(parent.context),
+        parent,
+        false
+      )
+    )
   }
 
-  override fun onViewAttachedToWindow(holder: SafeHintHolder) {
-    super.onViewAttachedToWindow(holder)
-    (holder.itemView as? SafeHintView)?.run {
-      val curPos = dataSource.indexOf(this.hintStr)
-      if (curPos == 0) {
-        startAnimation(dataSource.last())
-      } else {
-        startAnimation(dataSource[curPos - 1])
-      }
-    }
+
+  override fun onBindViewHolder(holder: SafeHintHolder, position: Int) {
+    holder.itemBinding.itemSafeHintTv.text = dataSource[position]
+//    holder.startAnimation()
   }
 
   override fun onViewDetachedFromWindow(holder: SafeHintHolder) {
     super.onViewDetachedFromWindow(holder)
-    (holder.itemView as? SafeHintView)?.stopAnimation()
+    holder.stopAnimation()
   }
 
   override fun getItemCount() = dataSource.size
 
-  inner class SafeHintHolder(itemView: SafeHintView) : RecyclerView.ViewHolder(itemView)
+  inner class SafeHintHolder(val itemBinding: ItemSafeHintBinding) :
+    RecyclerView.ViewHolder(itemBinding.root) {
+
+    private var animator: ValueAnimator? = null
+
+    fun startAnimation() {
+      val cur = itemBinding.itemSafeHintTv.width
+      animator = ValueAnimator.ofFloat(0F, 1F)
+        .apply {
+          addUpdateListener {
+            val process = it.animatedValue as Float
+            Log.d("YANGQ", "SafeHintHolder::startAnimation~ $process")
+            itemBinding.itemSafeHintTv.setWidthAndHeightInPx(newWidth = cur + (process * 20.dp).int)
+          }
+          start()
+        }
+
+    }
+
+    fun stopAnimation() {
+      animator?.cancel()
+    }
+  }
 }

@@ -75,7 +75,7 @@ class SafeHintView @JvmOverloads constructor(
 
   var textStyle: (TextView.() -> Unit)? = null
 
-  var autoUpdateInterval = 2000L
+  var autoUpdateInterval = 1000L
 
   init {
     willNotDraw()
@@ -89,7 +89,7 @@ class SafeHintView @JvmOverloads constructor(
     reverseLayout: Boolean = false
   ) : LinearLayoutManager(context, orientation, reverseLayout) {
     private val snapHelper = LinearSnapHelper()
-    private val smoothTime = 3000F
+    private val smoothTime = 1000F
     private val animatior by lazy { ObjectAnimator.ofInt(0, 0) }
 
     override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams =

@@ -5,26 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-  <!--  <ImageView-->
-  <!--      android:id="@+id/safeHintBgIv"-->
-  <!--      android:layout_width="5dp"-->
-  <!--      android:background="@color/purple_700"-->
-  <!--      android:layout_height="60dp"-->
-  <!--      app:layout_constraintStart_toStartOf="@id/safeHintRv"-->
-  <!--      app:layout_constraintTop_toTopOf="@id/safeHintRv"-->
-  <!--      android:contentDescription="@null"-->
-  <!--      />-->
-
-  <!--  <androidx.recyclerview.widget.RecyclerView-->
-  <!--      android:id="@+id/safeHintRv"-->
-  <!--      android:layout_width="wrap_content"-->
-  <!--      android:background="@color/purple_200"-->
-  <!--      android:paddingEnd="8dp"-->
-  <!--      android:layout_height="@dimen/safe_hint_height"-->
-  <!--      app:layout_constraintTop_toTopOf="parent"-->
-  <!--      app:layout_constraintStart_toStartOf="parent"-->
-  <!--      />-->
-
   <com.github.grieey.wow.view.SafeHintView
       android:id="@+id/saftHintView"
       android:layout_width="wrap_content"

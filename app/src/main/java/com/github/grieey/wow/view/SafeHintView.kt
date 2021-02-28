@@ -1,5 +1,6 @@
 package com.github.grieey.wow.view
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
@@ -19,6 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.github.grieey.core_ext.dp
+import com.github.grieey.core_ext.int
 import com.github.grieey.core_ext.safeLet
 import com.github.grieey.wow.R
 import com.github.grieey.wow.extension.applyColorTo
@@ -57,7 +60,6 @@ class SafeHintView @JvmOverloads constructor(
       super.handleMessage(msg)
       if (msg.what == UPDATE_POSITION) {
         val nextPosition = (msg.obj as Int)
-        Log.d("YANGQ", "SafeHintView::~ 自动滚$nextPosition")
         recyclerView.smoothScrollToPosition(nextPosition)
       }
     }
@@ -87,7 +89,8 @@ class SafeHintView @JvmOverloads constructor(
     reverseLayout: Boolean = false
   ) : LinearLayoutManager(context, orientation, reverseLayout) {
     private val snapHelper = LinearSnapHelper()
-    private val smoothTime = 150F
+    private val smoothTime = 3000F
+    private val animatior by lazy { ObjectAnimator.ofInt(0, 0) }
 
     override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams =
       RecyclerView.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
@@ -115,7 +118,6 @@ class SafeHintView @JvmOverloads constructor(
       super.onLayoutChildren(recycler, state)
       if (childCount < 0 || state.isPreLayout || dataSource.isEmpty()) return
 
-      Log.d("YANGQ", "LayoutManager::onLayoutChildren~ $curPosition")
       intervalHandler.sendMessageDelayed(Message.obtain().apply {
         what = UPDATE_POSITION
         obj = curPosition + 1
@@ -148,22 +150,26 @@ class SafeHintView @JvmOverloads constructor(
       state: RecyclerView.State?
     ): Int {
       val scrolled = super.scrollVerticallyBy(dy, recycler, state)
-//      animationBg()
+      animationBg()
       return scrolled
     }
 
     private fun animationBg() {
-      val cur = findFirstVisibleItemPosition()
+      val cur = curPosition - 1
       val next = if (cur == dataSource.lastIndex) 0 else cur + 1
       val curView = findViewByPosition(cur)
       val nextView = findViewByPosition(next)
 
       safeLet(curView, nextView) { cv, nv ->
-        val mid = width / 2
-        val itemMid = (getTopDecorationHeight(cv) + getBottomDecorationHeight(cv)) / 2
-        val process = 1 - itemMid / mid
-        val newWidth = cv.width + (nv.width - cv.width) * process
-        bgView.setWidthInPx(newWidth)
+        if (animatior.isRunning) return@safeLet
+        animatior.apply {
+          setIntValues(0, nv.width - cv.width)
+          addUpdateListener {
+            bgView.setWidthInPx(cv.width + it.animatedValue as Int + 16.dp.int)
+          }
+          duration = (smoothTime).toLong()
+          start()
+        }
       }
     }
   }

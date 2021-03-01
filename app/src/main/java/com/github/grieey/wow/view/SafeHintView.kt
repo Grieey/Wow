@@ -7,7 +7,6 @@ import android.os.Looper
 import android.os.Message
 import android.util.AttributeSet
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -60,13 +59,13 @@ class SafeHintView @JvmOverloads constructor(
       super.handleMessage(msg)
       if (msg.what == UPDATE_POSITION) {
         val nextPosition = (msg.obj as Int)
-        Log.d("YANGQ", "SafeHintView::handleMessage~ $nextPosition")
         recyclerView.smoothScrollToPosition(nextPosition)
       }
     }
   }
 
   private var curPosition = 0
+  private var animatedPosition = -1
 
   var dataSource = emptyList<String>()
     set(value) {
@@ -119,6 +118,7 @@ class SafeHintView @JvmOverloads constructor(
       super.onLayoutChildren(recycler, state)
       if (childCount < 0 || state.isPreLayout || dataSource.isEmpty()) return
 
+      // 这里会回调多次，但是curPosition都是+1，不是自增，所以短时间内handler收到的值都是一样的。
       intervalHandler.sendMessageDelayed(Message.obtain().apply {
         what = UPDATE_POSITION
         obj = curPosition + 1
@@ -161,13 +161,14 @@ class SafeHintView @JvmOverloads constructor(
       val curView = findViewByPosition(cur)
       val nextView = findViewByPosition(next)
       safeLet(curView, nextView) { cv, nv ->
-        if (animatior.isRunning) return@safeLet
+        if (animatior.isRunning || animatedPosition == next) return@safeLet
         animatior.apply {
           setIntValues(0, nv.width - cv.width)
           addUpdateListener {
             bgView.setWidthInPx(cv.width + it.animatedValue as Int + 16.dp.int)
           }
-          duration = (smoothTime).toLong()
+          duration = (smoothTime * 0.5).toLong()
+          animatedPosition = next
           start()
         }
       }

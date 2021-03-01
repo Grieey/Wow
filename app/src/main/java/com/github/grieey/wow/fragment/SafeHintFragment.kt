@@ -16,7 +16,8 @@ import com.github.grieey.wow.extension.applyColorTo
 class SafeHintFragment :
   ViewBindingFragment<FragmentSafeHintBinding>(FragmentSafeHintBinding::inflate) {
 
-  private val dataList = listOf("行程不安全，亲人行程不安全，亲人", "哈哈哈哈哈", "行程不安全，亲人两行泪", "行程不安全，亲人")
+  private val dataList =
+    listOf("平台已完成对出租车司机和车辆信息核验", "出租车已全部完成综合身份核验", "平台已完成对出租车司机和车辆信息核验2", "行程不安全，亲人")
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.view.Gravity
@@ -23,7 +24,6 @@ import com.github.grieey.core_ext.dp
 import com.github.grieey.core_ext.int
 import com.github.grieey.core_ext.safeLet
 import com.github.grieey.wow.R
-import com.github.grieey.wow.extension.applyColorTo
 import com.github.grieey.wow.extension.applySizeTo
 import com.github.grieey.wow.extension.setWidthInPx
 
@@ -51,7 +51,7 @@ class SafeHintView @JvmOverloads constructor(
     R.dimen.small_padding applySizeTo this::setPadding
   }
   private val bgView = ImageView(context).apply {
-    R.color.purple_200 applyColorTo this::setBackgroundColor
+    setBackgroundResource(R.drawable.bg_rectangle_8_blue200)
   }
 
   private val intervalHandler = object : Handler(Looper.getMainLooper()) {
@@ -80,7 +80,9 @@ class SafeHintView @JvmOverloads constructor(
   init {
     willNotDraw()
     addView(bgView, LayoutParams(MATCH_PARENT, MATCH_PARENT))
-    addView(recyclerView, LayoutParams(WRAP_CONTENT, MATCH_PARENT))
+    addView(recyclerView, LayoutParams(WRAP_CONTENT, MATCH_PARENT).apply {
+      setMargins(16.dp.int, 0, 0, 0)
+    })
   }
 
   private inner class LayoutManager @JvmOverloads constructor(
@@ -165,7 +167,7 @@ class SafeHintView @JvmOverloads constructor(
         animatior.apply {
           setIntValues(0, nv.width - cv.width)
           addUpdateListener {
-            bgView.setWidthInPx(cv.width + it.animatedValue as Int + 16.dp.int)
+            bgView.setWidthInPx(cv.width + it.animatedValue as Int + 32.dp.int)
           }
           duration = (smoothTime * 0.5).toLong()
           animatedPosition = next
@@ -180,6 +182,8 @@ class SafeHintView @JvmOverloads constructor(
       Holder(TextView(context).apply {
         layoutParams = LayoutParams(WRAP_CONTENT, MATCH_PARENT)
         gravity = Gravity.CENTER_VERTICAL
+        isSingleLine = true
+        ellipsize = TextUtils.TruncateAt.END
         textStyle?.let(this::apply)
       })
 
